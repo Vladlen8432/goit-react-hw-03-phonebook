@@ -10,6 +10,19 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts) {
+      this.setState({ contacts: JSON.parse(savedContacts) });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleFilterChange = event => {
     this.setState({ filter: event.target.value });
   };
@@ -56,7 +69,7 @@ class App extends Component {
 
     return (
       <div className="container">
-        <h1 className='phonebookHeager'>Phonebook</h1>
+        <h1 className="phonebookHeager">Phonebook</h1>
         <ContactForm onAddContact={this.handleAddContact} />
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
